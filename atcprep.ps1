@@ -17,3 +17,4 @@ foreach ($link in $links){
         $tasks=$tasks+=$link.href
     }
 }
+$tasks = $tasks | Select-Object -Unique
