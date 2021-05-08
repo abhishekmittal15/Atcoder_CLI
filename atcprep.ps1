@@ -18,3 +18,13 @@ foreach ($link in $links){
     }
 }
 $tasks = $tasks | Select-Object -Unique
+foreach($task in $tasks){
+    $website=$base_url+$task
+    $res=Invoke-WebRequest $website
+    Start-Sleep -Milliseconds 100
+    $res=$res.AllElements | Where-Object tagname -eq "pre"
+    $start=1
+    $end=$res.length/2-1
+    $task_num=$task.Substring($task.length-1)
+    $var=Get-Location
+}
