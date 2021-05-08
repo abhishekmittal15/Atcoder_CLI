@@ -10,3 +10,10 @@ if ($status -ne 200) {
     Write-Host 'Unable to connect to the contest page'
     exit
 }
+$links=$res.Links
+$tasks=@()
+foreach ($link in $links){
+    if($link -like "*tasks/$contest_name*"){
+        $tasks=$tasks+=$link.href
+    }
+}
