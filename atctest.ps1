@@ -7,3 +7,6 @@ else {
     Get-Content err.txt
     exit
 }
+$var=Get-ChildItem in*
+$n=$var.length
+Write-Host $n
