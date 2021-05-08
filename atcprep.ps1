@@ -27,4 +27,22 @@ foreach($task in $tasks){
     $end=$res.length/2-1
     $task_num=$task.Substring($task.length-1)
     $var=Get-Location
+    $directory=$var.tostring()+"\"+$task_num
+    mkdir $directory > $null
+    Set-Location $directory > $null
+    for ($num=$start;$num -le $end;$num++){
+        $content=$res[$num].innerText
+        if(($num%2) -eq 1){
+            [int] $index=$num/2.1
+            $index++
+            $input_filename="in$index.txt"
+            Set-Content $input_filename $content 
+        }
+        else{
+            [int] $index=$num/2
+            $output_filename="out$index.txt"
+            Set-Content $output_filename $content
+        }
+    }
+    Set-Location .. > $null
 }
