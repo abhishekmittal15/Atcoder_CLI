@@ -25,3 +25,6 @@ for($num=0;$num -lt $n;$num++){
     }
     Remove-Item "myout$num.txt"
 }
+Remove-Item a.exe
+Remove-Item comparison.txt
+Remove-Item err.txt
