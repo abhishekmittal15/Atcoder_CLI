@@ -17,6 +17,7 @@ $params=@{
     "csrf_token"=$res1.InputFields[0].value
 }
 $res2=Invoke-WebRequest $login -Method POST -Body $params -WebSession $Please
+$res2.RawContent
 $res3=Invoke-WebRequest $submit -WebSession $Please
 $params=@{
     "data.TaskScreenName"=$contest_name+"_"+$problem_name;
@@ -25,4 +26,5 @@ $params=@{
     "sourceCode"=[System.IO.File]::ReadAllText($dir+"\sol.cpp");
 }
 $res4=Invoke-WebRequest $submit -Method POST -WebSession $Please -Body $params
-# $res5=Invoke-WebRequest $submissions 
+$res5=Invoke-WebRequest $submissions 
+$res5
