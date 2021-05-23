@@ -1,13 +1,28 @@
-$login = 'https://atcoder.jp/login'
-$res=Invoke-WebRequest $login -SessionVariable 'Session'
-$var=$res.Headers['Set-Cookie']
-$var=$var.split(";")
-$start=$var[4].IndexOf("csrf_token")+10
-$csrf_token=$var[4].Substring($start)
-$Body=@{
-    username= 'abhishekmittal15'
-    password= 'Abhi964!!'
-    csrf_token= $csrf_token
+$directory=Get-Location 
+$directory=$directory.tostring()
+$dir=$directory
+$directory=$directory.Split("\")
+$contest_name=$directory[-2]
+$problem_name=$directory[-1]
+
+Write-Host $contest_name
+$login = "https://atcoder.jp/login"
+$submit="https://atcoder.jp/contests/"+$contest_name+"/submit"
+$submissions="https://atcoder.jp/contests/"+$contest_name+"/submissions/me"
+
+$res1=Invoke-WebRequest $login -SessionVariable Please
+$params=@{
+    "username"="abhishekmittal15";
+    "password"="Abhi964!!";
+    "csrf_token"=$res1.InputFields[0].value
 }
-$loginResponse=Invoke-WebRequest $login -WebSession $Session -Body $Body -Method 'POST'
-Write-Host $loginResponse
+$res2=Invoke-WebRequest $login -Method POST -Body $params -WebSession $Please
+$res3=Invoke-WebRequest $submit -WebSession $Please
+$params=@{
+    "data.TaskScreenName"=$contest_name+"_"+$problem_name;
+    "data.LanguageId"="4003";
+    "csrf_token"=$res1.InputFields[0].value;
+    "sourceCode"=[System.IO.File]::ReadAllText($dir+"\sol.cpp");
+}
+$res4=Invoke-WebRequest $submit -Method POST -WebSession $Please -Body $params
+# $res5=Invoke-WebRequest $submissions 
