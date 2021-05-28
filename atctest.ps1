@@ -34,7 +34,7 @@ for($num=1;$num -le $var;$num++){
         }
         Remove-Item comparison.txt
     }
-    Write-Host "Testcase$num : $message" -ForegroundColor $color 
+    Write-Host "Testcase$num :  $message" -ForegroundColor $color 
     Remove-Item "myout$num.txt"
 }
 Remove-Item a.exe
