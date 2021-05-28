@@ -15,36 +15,27 @@ for($num=1;$num -le $var;$num++){
     $myout="myout$num.txt"
     cmd /C ".\a.exe<$infile>$myout"
     $val=[String]::IsNullOrWhiteSpace((Get-Content $myout))
-    Write-Host "Testcase$num" -ForegroundColor Blue
-    $flag=-1;
+    $message="Unknown error occured"
+    $color="Brown"
     if($val -eq $true){
-        $flag=1
+        $message="Your code didnt produce any output" 
+        $color="Yellow"
     }
     else{
         Compare-Object (Get-Content $outfile) (Get-Content $myout) > comparison.txt
         $val=[String]::IsNullOrWhiteSpace((Get-Content .\comparison.txt))
         if($val -eq $false){
-            $flag=2  
+            $message="Failed" 
+            $color="Red"  
         }
         else{
-            $flag=3
+            $message="Passed" 
+            $color="Green"
         }
         Remove-Item comparison.txt
     }
-    if($flag -eq 1){
-        Write-Host "Your code didnt produce any output" -ForegroundColor Yellow
-    }
-    elseif ($flag -eq 2) {
-        Write-Host "Failed" -ForegroundColor Red
-    }
-    elseif ($flag -eq 3) {
-        Write-Host "Passed" -ForegroundColor Green 
-    }
-    else{
-        Write-Host "Unknown Error occured" -ForegroundColor Brown
-    }
-   Remove-Item "myout$num.txt"
-   Write-Host "---------"
+    Write-Host "Testcase$num : $message" -ForegroundColor $color 
+    Remove-Item "myout$num.txt"
 }
 Remove-Item a.exe
 Remove-Item err.txt 
