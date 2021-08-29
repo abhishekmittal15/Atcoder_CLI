@@ -1,16 +1,32 @@
 $contest_name = $null
 $contest_name=Read-Host("Enter the Contest Name")
+mkdir $contest_name > $null
+Set-Location $contest_name
 $base_url = 'http://atcoder.jp'
 $endpoint = '/contests/' + $contest_name + '/tasks'
 $website = $base_url + $endpoint
-$res = Invoke-WebRequest  $website 
+$user="abhishekmittal15"
+$pass="Abhi964!!"
+$login = "https://atcoder.jp/login"
+$res1 = Invoke-WebRequest $login -SessionVariable Sess
+$csrf = $res1.InputFields[0].value;
+$params = @{
+    "username"   = $user;
+    "password"   = $pass;
+    "csrf_token" = $csrf;
+}
+$res = Invoke-WebRequest $login -Method POST -Body $params -WebSession $Sess
+$res= Invoke-WebRequest $website -WebSession $Sess
+
 Start-Sleep -Milliseconds 200
 $status = $res.StatusCode
+# Write-Host $status
 if ($status -ne 200) {
     Write-Host 'Unable to connect to the contest page'
     exit
 }
 $links=$res.Links
+# Write-Host $links
 $tasks=@()
 foreach ($link in $links){
     if($link -like "*tasks/$contest_name*"){
@@ -20,7 +36,7 @@ foreach ($link in $links){
 $tasks = $tasks | Select-Object -Unique
 foreach($task in $tasks){
     $website=$base_url+$task
-    $res=Invoke-WebRequest $website
+    $res=Invoke-WebRequest $website -WebSession $Sess
     Start-Sleep -Milliseconds 100
     $res=$res.AllElements | Where-Object tagname -eq "pre"
     $start=1

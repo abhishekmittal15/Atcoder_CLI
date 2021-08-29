@@ -13,8 +13,8 @@ $submit="https://atcoder.jp/contests/"+$contest_name+"/submit"
 $res1=Invoke-WebRequest $login -SessionVariable Sess
 $csrf=$res1.InputFields[0].value;
 $params=@{
-"username"="abhishekmittal15";
-"password"="Abhi964!!";
+"username"=$user;
+"password"=$pass;
 "csrf_token"=$csrf;
 }
 $res=Invoke-WebRequest $login -Method POST -Body $params -WebSession $Sess
